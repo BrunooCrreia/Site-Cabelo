@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <title>Produtos - cabellodograu</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* CORES: o vermelho da marca, mas mais suave e sem brilho */
+    :root {
+      --vermelho: #a83a3a;           /* botões e destaques */
+      --vermelho-claro: #c25050;     /* hover e título */
+      --vermelho-borda: rgba(168, 58, 58, 0.45);
+      --borda-neutra: rgba(255, 255, 255, 0.12);
+      --card: rgba(18, 18, 18, 0.92);
+      --texto: #f2f2f2;
+      --texto-suave: #b5b5b5;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #000;
+      color: var(--texto);
+      font-family: 'Orbitron', Arial, sans-serif;
+      text-align: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* FUNDO (mesmo da página inicial) */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+        url("imagens/PapelDeParede.jpg") center / cover no-repeat;
+      z-index: -1;
+    }
+
+    /* TOPO FIXO: "Voltar" e categorias ficam sempre à mão */
+    .topo {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding-top: env(safe-area-inset-top);
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--borda-neutra);
+    }
+
+    .topo-linha {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 10px 16px 6px;
+    }
+
+    .topo .voltar-topo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      height: 44px;
+      padding: 0 12px;
+      color: var(--texto);
+      text-decoration: none;
+      border: 1px solid var(--vermelho-borda);
+      border-radius: 12px;
+      font-size: 14px;
+    }
+
+    .topo h1 {
+      margin: 0;
+      font-size: 20px;
+      color: var(--vermelho-claro);
+      letter-spacing: 2px;
+    }
+
+    /* ATALHOS DAS CATEGORIAS (dentro do topo fixo) */
+    .atalhos {
+      display: flex;
+      gap: 8px;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 4px 16px 10px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .atalhos::-webkit-scrollbar {
+      display: none;
+    }
+
+    @media (min-width: 640px) {
+      .atalhos {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+
+    .atalhos a {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 0 14px;
+      border: 1px solid var(--borda-neutra);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--texto-suave);
+      text-decoration: none;
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      white-space: nowrap;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    /* Categoria que está na tela agora */
+    .atalhos a.ativo {
+      background: var(--vermelho);
+      border-color: var(--vermelho);
+      color: #fff;
+    }
+
+    @media (hover: hover) {
+      .atalhos a:hover {
+        border-color: var(--vermelho-borda);
+        color: #fff;
+      }
+    }
+
+    /* SUBTÍTULOS DAS CATEGORIAS */
+    .categoria {
+      max-width: 1000px;
+      margin: 0 auto;
+      scroll-margin-top: 130px; /* não fica escondido atrás do topo fixo */
+    }
+
+    .categoria h2 {
+      margin: 28px 16px 12px;
+      padding-bottom: 8px;
+      font-size: 16px;
+      text-align: left;
+      color: var(--texto);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--vermelho-borda);
+    }
+
+    @media (min-width: 640px) {
+      .categoria h2 {
+        font-size: 20px;
+      }
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* GRADE: 2 colunas no celular, mais colunas em telas maiores */
+    .produtos {
+      max-width: 1000px;
+      margin: 0 auto 10px;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    @media (min-width: 640px) {
+      .produtos {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 20px;
+      }
+    }
+
+    .produto {
+      display: flex;
+      flex-direction: column;
+      background: var(--card);
+      border: 1px solid var(--borda-neutra);
+      border-radius: 14px;
+      padding: 8px;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+
+    @media (min-width: 640px) {
+      .produto {
+        padding: 14px;
+      }
+    }
+
+    /* Efeito de hover só em quem tem mouse (no celular ele "gruda") */
+    @media (hover: hover) {
+      .produto:hover {
+        transform: translateY(-4px);
+        border-color: var(--vermelho-borda);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    /* FOTOS: arrasta para o lado no celular */
+    .fotos {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      aspect-ratio: 1 / 1;
+      background: #fff;
+      border-radius: 10px;
+    }
+
+    .fotos::-webkit-scrollbar {
+      display: none;
+    }
+
+    .fotos a {
+      flex: 0 0 100%;
+      scroll-snap-align: start;
+    }
+
+    .fotos img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* Pontinhos: bolinha pequena, mas área de toque grande */
+    .pontos {
+      display: flex;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    .pontos button {
+      width: 32px;
+      height: 28px;
+      padding: 0;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .pontos button::before {
+      content: "";
+      display: block;
+      width: 9px;
+      height: 9px;
+      margin: auto;
+      border-radius: 50%;
+      border: 1px solid var(--texto-suave);
+    }
+
+    .pontos button.ativo::before {
+      background: var(--vermelho-claro);
+      border-color: var(--vermelho-claro);
+    }
+
+    .nome-produto {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin: 8px 2px 10px;
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.35;
+      color: var(--texto);
+      text-decoration: none;
+    }
+
+    @media (min-width: 640px) {
+      .nome-produto {
+        font-size: 15px;
+      }
+    }
+
+    /* Botão sempre alinhado no fim do card */
+    .comprar {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 8px;
+      background: var(--vermelho);
+      color: #fff;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: bold;
+      border-radius: 10px;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .comprar:active {
+      transform: scale(0.97);
+    }
+
+    @media (hover: hover) {
+      .comprar:hover {
+        background: var(--vermelho-claro);
+      }
+    }
+
+    .voltar {
+      display: inline-block;
+      margin: 30px 16px;
+      margin-bottom: max(30px, env(safe-area-inset-bottom));
+      padding: 12px 24px;
+      color: var(--texto);
+      text-decoration: none;
+      border: 1px solid var(--vermelho-borda);
+      border-radius: 12px;
+    }
+
+    @media (hover: hover) {
+      .voltar:hover,
+      .topo .voltar-topo:hover {
+        background: var(--vermelho);
+        border-color: var(--vermelho);
+        color: #fff;
+      }
+    }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid #fff;
+      outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="topo">
+    <div class="topo-linha">
+      <a class="voltar-topo" href="index.html" aria-label="Voltar para o início">⬅</a>
+      <h1>🔥 PRODUTOS</h1>
+    </div>
+
+    <!-- Atalhos para cada categoria: ficam fixos no topo (arrasta para o lado no celular) -->
+    <nav class="atalhos" id="atalhos" aria-label="Categorias"></nav>
+  </header>
+
+  <main id="catalogo"></main>
+
+  <a class="voltar" href="index.html">⬅ Voltar</a>
+
+  <script>
+    // Os produtos ficam separados por categoria; cada categoria vira um subtítulo na página.
+    // Para adicionar um produto, inclua um novo item na lista "produtos" da categoria certa.
+    // Para criar uma categoria nova, copie um bloco { titulo, produtos } inteiro.
+    // Em "imagens" pode ter uma ou mais fotos; a primeira é a principal.
+    const categorias = [
+      {
+        titulo: "Equipamentos para moto",
+        produtos: [
+          {
+            nome: "Par de Bauletos Laterais Alumínio Preto 36L com Trava",
+            imagens: ["imagens/bau lateral.webp", "imagens/bau lateral 2.webp"],
+            link: "https://meli.la/26crKLv"
+          },
+          {
+            nome: "Suporte Para Baú Nx500 Nx 500 2025+ Braz",
+            imagens: ["imagens/suporte de bau.webp"],
+            link: "https://meli.la/2j3JWJa"
+          },
+          {
+            nome: "Bolsa 5l + Suporte Para Moto Protetor De Carenagem Lateral Preto",
+            imagens: ["imagens/bolsa bau 5l.webp"],
+            link: "https://meli.la/31jz6gf"
+          },
+          {
+            nome: "Protetor De Motor Carenagem Honda Cb 500x 2019 A 2022 Scam",
+            imagens: ["imagens/protetor carenagem.webp"],
+            link: "https://meli.la/2hyMd3f"
+          },
+          {
+            nome: "Kit Erguer Cb500x 2020 21 Cb 500 Link Prolongador Suspensão",
+            imagens: ["imagens/alongador.webp"],
+            link: "https://meli.la/1BbtQZP"
+          },
+          {
+            nome: "Pneu Moto 110/80-19 Dunlop Trailmax Mixtour Dianteiro",
+            imagens: ["imagens/pneu dunlop.webp", "imagens/pneu dunlop 2.webp"],
+            link: "https://meli.la/12LJKx5"
+          },
+          {
+            nome: "Trava Acelerador E Piloto Automático Moto Elétrico Bicicleta",
+            imagens: ["imagens/trava acelerador.webp", "imagens/trava acelerador 2.webp"],
+            link: "https://meli.la/2pAP7V8"
+          }
+        ]
+      },
+      {
+        titulo: "Acessórios para o piloto",
+        produtos: [
+          {
+            nome: "Intercomunicador YONJOOZ V6 PLUS Bluetooth para Capacete, à Prova d'Água, com Cancelamento de Ruído e Alcance de 1.2 km",
+            imagens: ["imagens/intercomunicador.webp", "imagens/intercomunicador 2.webp"],
+            link: "https://meli.la/24Ci9pD"
+          },
+          {
+            nome: "Suporte Capacete Moto Câmera Celular Galaxy Gopro Queixo Ios",
+            imagens: ["imagens/suporte celular capcaete.webp"],
+            link: "https://meli.la/28VDnHE"
+          },
+          {
+            nome: "Polaina Impermeável Galocha P/motociclista Gp Tech Premium",
+            imagens: ["imagens/polaina.webp"],
+            link: "https://meli.la/1L1v1Wy"
+          }
+        ]
+      },
+      {
+        titulo: "Gravação e eletrônicos",
+        produtos: [
+          {
+            nome: "Microfone Lapela A'Gold MCF-38D Sem Fio para iPhone e Android com 2 Microfones",
+            imagens: ["imagens/lapela.webp", "imagens/lapela 2.webp"],
+            link: "https://meli.la/2GoXkwN"
+          },
+          {
+            nome: "Carregador Power Bank 50.000mah Portátil Turbo Rápido 22.5w Cor Preto",
+            imagens: ["imagens/carregador portatil.webp", "imagens/carregador portatil 2.webp"],
+            link: "https://meli.la/2fBH1c4"
+          }
+        ]
+      },
+      {
+        titulo: "Manutenção",
+        produtos: [
+          {
+            nome: "Lubrificante Mobil Spray Corrente Super Moto Chain Lub 200ml",
+            imagens: ["imagens/mobil.webp"],
+            link: "https://meli.la/2MQj6KN"
+          },
+          {
+            nome: "Kit Remendo Metal Reparo Macarrão Pneu Carro Moto Com Maleta",
+            imagens: ["imagens/macarrao.webp"],
+            link: "https://meli.la/2HJD9ig"
+          }
+        ]
+      },
+      {
+        titulo: "Camping",
+        produtos: [
+          {
+            nome: "Protetor Contra Vento Para Fogareiro Camping 10 Placas",
+            imagens: ["imagens/protetor vento.webp", "imagens/protetor vento 2.webp"],
+            link: "https://meli.la/2YfSci8"
+          },
+          {
+            nome: "Refil Nautika Ntk 227g Camping Maçarico Fogareiro Fogão Recarga Gás Acampamento",
+            imagens: ["imagens/refil gas ntk.webp"],
+            link: "https://meli.la/2H2wXzL"
+          }
+        ]
+      }
+    ];
+
+    const catalogo = document.getElementById("catalogo");
+    const atalhos = document.getElementById("atalhos");
+
+    // Evita que um nome com aspas quebre o HTML da página
+    const escapar = (texto) => String(texto ?? "")
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+
+    const linkSeguro = (url) => String(url ?? "").trim() || "#";
+
+    const listaDeImagens = (p) => p.imagens;
+
+    // Transforma o título em um id para os atalhos (ex.: "Manutenção" -> "manutencao")
+    const gerarId = (texto) => texto.normalize("NFD").replace(/[̀-ͯ]/g, "")
+      .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+    function mostrarCatalogo() {
+      atalhos.innerHTML = categorias
+        .map((cat) => `<a href="#${gerarId(cat.titulo)}">${escapar(cat.titulo)}</a>`)
+        .join("");
+
+      catalogo.innerHTML = categorias.map((cat) => `
+        <section class="categoria" id="${gerarId(cat.titulo)}">
+          <h2>${escapar(cat.titulo)}</h2>
+          <div class="produtos">${cardsDosProdutos(cat.produtos)}</div>
+        </section>
+      `).join("");
+
+      ativarGalerias();
+      acompanharCategoria();
+    }
+
+    // Acende o atalho da categoria que está na tela enquanto a pessoa rola a página
+    function acompanharCategoria() {
+      const topo = document.querySelector(".topo");
+      const secoes = [...document.querySelectorAll(".categoria")];
+      const links = [...atalhos.querySelectorAll("a")];
+      let atual = -1;
+      let agendado = false;
+
+      const atualizar = () => {
+        agendado = false;
+        const limite = topo.offsetHeight + 40;
+
+        // A categoria atual é a última cujo subtítulo já passou do topo fixo
+        let indice = 0;
+        secoes.forEach((secao, i) => {
+          if (secao.getBoundingClientRect().top <= limite) indice = i;
+        });
+
+        // No fim da página, acende a última categoria
+        if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) {
+          indice = secoes.length - 1;
+        }
+
+        if (indice === atual) return;
+        atual = indice;
+
+        links.forEach((link, i) => link.classList.toggle("ativo", i === indice));
+
+        // Mantém o atalho aceso visível na barra (no celular ela arrasta para o lado)
+        const link = links[indice];
+        atalhos.scrollTo({
+          left: link.offsetLeft - atalhos.offsetLeft - (atalhos.clientWidth - link.offsetWidth) / 2,
+          behavior: "smooth"
+        });
+      };
+
+      window.addEventListener("scroll", () => {
+        if (!agendado) {
+          agendado = true;
+          requestAnimationFrame(atualizar);
+        }
+      }, { passive: true });
+
+      atualizar();
+    }
+
+    function cardsDosProdutos(produtos) {
+      return produtos.map((produto) => {
+        const nome = escapar(produto.nome);
+        const link = escapar(linkSeguro(produto.link));
+        const imagens = listaDeImagens(produto);
+
+        // As fotos também são links; ficam fora da navegação por teclado para não repetir o mesmo link
+        const fotos = imagens
+          .map((src) => `
+            <a href="${link}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+              <img src="${escapar(src)}" alt="" loading="lazy" decoding="async">
+            </a>`)
+          .join("");
+
+        const pontos = imagens.length > 1
+          ? `<div class="pontos">${imagens
+              .map((_, i) => `<button type="button" class="${i === 0 ? "ativo" : ""}" aria-label="Ver foto ${i + 1} de ${imagens.length}"></button>`)
+              .join("")}</div>`
+          : "";
+
+        return `
+          <article class="produto">
+            <div class="fotos">${fotos}</div>
+            ${pontos}
+            <a class="nome-produto" href="${link}" target="_blank" rel="noopener" title="${nome}">${nome}</a>
+            <a class="comprar" href="${link}" target="_blank" rel="noopener">Ver produto</a>
+          </article>
+        `;
+      }).join("");
+    }
+
+    // Galeria: arrastar para o lado (celular), pontinhos e hover (computador)
+    function ativarGalerias() {
+      const temMouse = window.matchMedia("(hover: hover)").matches;
+
+      document.querySelectorAll(".produto").forEach((card) => {
+        const galeria = card.querySelector(".fotos");
+        const botoes = card.querySelectorAll(".pontos button");
+        if (botoes.length < 2) return;
+
+        const irPara = (n) => {
+          galeria.scrollTo({ left: n * galeria.clientWidth, behavior: "smooth" });
+        };
+
+        galeria.addEventListener("scroll", () => {
+          const atual = Math.round(galeria.scrollLeft / galeria.clientWidth);
+          botoes.forEach((b, i) => b.classList.toggle("ativo", i === atual));
+        }, { passive: true });
+
+        botoes.forEach((botao, i) => {
+          botao.addEventListener("click", () => irPara(i));
+        });
+
+        if (temMouse) {
+          card.addEventListener("mouseenter", () => irPara(1));
+          card.addEventListener("mouseleave", () => irPara(0));
+        }
+      });
+    }
+
+    mostrarCatalogo();
+  </script>
+
+</body>
+</html>

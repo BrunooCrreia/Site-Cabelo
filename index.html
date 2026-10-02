@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cabellodograu</title>
+
+  <!-- Fonte -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Orbitron', Arial, sans-serif;
+      color: #fff;
+      text-align: center;
+      overflow-x: hidden;
+      background: #000;
+    }
+
+    /* FUNDO COM FADE */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)),
+        url("imagens/PapelDeParede.jpg") center / cover no-repeat;
+      z-index: -1;
+      transition: opacity 1.5s ease;
+    }
+
+    /* PERFIL */
+    .profile {
+      margin-top: 35px;
+    }
+
+    .profile img {
+      width: 140px;
+      border-radius: 50%;
+      border: 4px solid #bf2525;
+      box-shadow: 0 0 25px #bf2525;
+    }
+
+    /* REDES */
+    .social-icons {
+      margin: 30px 0;
+    }
+
+    .social-icons a {
+      display: inline-block;
+      margin: 8px;
+      padding: 12px 20px;
+      background: #111;
+      border-radius: 14px;
+      color: #bf2525;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+      box-shadow: 0 0 10px rgba(191, 37, 37, 0.4);
+    }
+
+    .social-icons a:hover {
+      background: #bf2525;
+      color: #000;
+      transform: translateY(-4px);
+      box-shadow: 0 0 25px #bf2525;
+    }
+
+    /* TITULO + MOTO */
+    .title-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      margin: 25px 0;
+      cursor: pointer;
+    }
+
+    .mini-face {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+    }
+
+    .name {
+      font-size: 26px;
+      letter-spacing: 3px;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 5px #bf2525;
+      }
+
+      to {
+        text-shadow: 0 0 20px #bf2525, 0 0 40px #bf2525;
+      }
+    }
+
+    .moto {
+      font-size: 30px;
+      display: inline-block;
+    }
+
+    .acelerar {
+      animation: acelerar 1.2s forwards;
+    }
+
+    @keyframes acelerar {
+      to {
+        transform: translateX(-120vw);
+        opacity: 0;
+      }
+    }
+
+    /* LINKS IMAGEM */
+    .links-container {
+      width: 90%;
+      max-width: 520px;
+      margin: 35px auto 60px;
+    }
+
+    .link-block {
+      margin-bottom: 22px;
+    }
+
+    .link-block img {
+      width: 100%;
+      border-radius: 14px;
+      border: 2px solid #bf2525;
+      transition: 0.35s;
+    }
+
+    .link-block img:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 30px #bf2525;
+    }
+
+    /* MOBILE */
+    @media (max-width: 480px) {
+      .name {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- PERFIL -->
+  <div class="profile">
+    <img src="imagens/CentroSuperior.jpg" alt="Perfil">
+  </div>
+
+
+  <!-- TITULO -->
+  <div class="title-wrapper" id="gatilho">
+    <img src="imagens/miniaturaFace.png" class="mini-face">
+    <span class="name">cabellodograu</span>
+    <span class="moto" id="moto">🏍️</span>
+  </div>
+
+    <!-- REDES -->
+  <div class="social-icons">
+    <a href="https://www.instagram.com/cabellodograu/" target="_blank">Instagram</a>
+    <a href="https://www.tiktok.com/@cabellodograu" target="_blank">TikTok</a>
+    <a href="https://www.youtube.com/@cabellodograu" target="_blank">YouTube</a>
+    <a href="produtos.html">Produtos</a>
+  </div>
+
+  <!-- LINKS -->
+  <div class="links-container">
+    <div class="link-block">
+      <a href="https://www.instagram.com/cabellodograu/" target="_blank">
+        <img src="imagens/instagram-perfil.png" alt="Instagram @cabellodograu">
+      </a>
+    </div>
+
+    <div class="link-block">
+      <a href="https://www.tiktok.com/@cabellodograu" target="_blank">
+        <img src="imagens/tiktok-perfil.png" alt="TikTok @cabellodograu">
+      </a>
+    </div>
+
+    <div class="link-block">
+      <a href="https://www.youtube.com/@cabellodograu" target="_blank">
+        <img src="imagens/YoutubeCapa.png" alt="YouTube @cabellodograu">
+      </a>
+    </div>
+  </div>
+
+  <script>
+    /* MOTO */
+    const gatilho = document.getElementById("gatilho");
+    const moto = document.getElementById("moto");
+
+    gatilho.addEventListener("mouseenter", () => {
+      moto.classList.remove("acelerar");
+      //void moto.offsetWidth;
+      moto.classList.add("acelerar");
+    });
+
+    /* FUNDO */
+    const imagens = [
+      "imagens/fundo1.jpg",
+      "imagens/fundo2.jpg",
+      "imagens/fundo3.jpg",
+      "imagens/fundo4.jpg"
+    ];
+
+    let i = 0;
+    const fundo = document.querySelector("body::before");
+
+    setInterval(() => {
+      document.body.style.setProperty(
+        "--bg",
+        `url(${imagens[i]})`
+      );
+      document.body.style.setProperty(
+        "background-image",
+        `linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.75)), url(${imagens[i]})`
+      );
+      i = (i + 1) % imagens.length;
+    }, 5000);
+  </script>
+
+</body>
+</html>

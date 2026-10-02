@@ -1,0 +1,18 @@
+# Configurações do editor (tem a chave antiga do Firebase)
+.vscode/
+
+# Imagens que não aparecem mais no site (ficam só no computador)
+imagens/Screenshot_1.png
+imagens/instagram.png
+imagens/instagram atualizado.png
+imagens/tik tok atualizado.png
+imagens/twitch.png
+imagens/ls2StarWars.png
+imagens/ls2StarWars.webp
+imagens/suporteCap.webp
+imagens/suporte de case central.webp
+imagens/backGround/
+
+# Arquivos do Windows
+Thumbs.db
+desktop.ini
